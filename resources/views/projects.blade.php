@@ -5,7 +5,7 @@
 @section('content')
     <h1>Proyek Saya</h1>
     @php
-        $projects = ['Aplikasi E-Commerce', 'Sistem Informasi Perpustakaan', 'Website Portfolio Laravel'];
+        $projects = ['Website Review Film REVFLIX'];
     @endphp
 
     <ul>
