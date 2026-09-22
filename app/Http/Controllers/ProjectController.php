@@ -20,19 +20,50 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required|max:200',
-            'description' => 'required',
+        $validatedData = $request->validate([
+            'title' => 'required|string|min:5|max:255', // tambah min:5
+            'description' => 'required|string|min:10',  // tambah min:10
         ]);
 
-        Project::create($request->only(['title', 'description']));
+        Project::create($validatedData);
 
-        return redirect()->route('projects.index');
+        // Tambah flash message
+        return redirect()->route('projects.index')
+                         ->with('success', 'Project berhasil ditambahkan.');
     }
 
     public function show($id)
     {
         $project = Project::findOrFail($id);
         return view('projects.show', compact('project'));
+    }
+
+    public function edit(string $id)
+    {
+        $project = Project::findOrFail($id);
+        return view('projects.edit', compact('project'));
+    }
+
+    public function update(Request $request, string $id)
+    {
+        $validatedData = $request->validate([
+            'title' => 'required|string|min:5|max:255',
+            'description' => 'required|string|min:10',
+        ]);
+
+        $project = Project::findOrFail($id);
+        $project->update($validatedData);
+
+        return redirect()->route('projects.index')
+                         ->with('success', 'Project berhasil diperbarui.');
+    }
+
+    public function destroy(string $id)
+    {
+        $project = Project::findOrFail($id);
+        $project->delete();
+
+        return redirect()->route('projects.index')
+                         ->with('success', 'Project berhasil dihapus.');
     }
 }
