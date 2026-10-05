@@ -16,3 +16,11 @@ Route::get('/education', function () {
 })->name('education');
 
 Route::resource('projects', ProjectController::class);
+
+
+Route::resource('projects', ProjectController::class);
+
+// Route tugas praktikum (Trash, Restore, Force Delete)
+Route::get('projects-trash', [ProjectController::class, 'trash'])->name('projects.trash');
+Route::post('projects/{id}/restore', [ProjectController::class, 'restore'])->name('projects.restore');
+Route::delete('projects/{id}/force-delete', [ProjectController::class, 'forceDelete'])->name('projects.forceDelete');

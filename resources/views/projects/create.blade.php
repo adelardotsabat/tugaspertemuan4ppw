@@ -1,49 +1,49 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-2xl mx-auto py-6">
-    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-        
-        {{-- Header Form --}}
-        <div class="border-b border-gray-200 pb-4 mb-6">
-            <h1 class="text-2xl font-bold text-gray-800">Tambah Project Baru</h1>
-            <p class="text-sm text-gray-500 mt-1">Isi formulir di bawah untuk menambahkan project ke dalam portofolio Anda.</p>
-        </div>
+<div class="max-w-2xl mx-auto py-8 px-4">
+    <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+        <h2 class="text-2xl font-bold text-gray-800 mb-1">Tambah Project Baru</h2>
+        <p class="text-sm text-gray-500 mb-6">Isi formulir di bawah untuk menambahkan project ke dalam portofolio Anda.</p>
 
-        {{-- Form Tambah --}}
-        <form action="{{ route('projects.store') }}" method="POST" class="space-y-5">
+        <form action="{{ route('projects.store') }}" method="POST" class="space-y-4">
             @csrf
 
-            {{-- Input Title --}}
+            <!-- Title Input -->
             <div>
                 <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Title Project</label>
-                <input type="text" 
-                       name="title" 
-                       id="title" 
-                       value="{{ old('title') }}" 
-                       placeholder="Masukkan judul project (min. 5 karakter)" 
-                       class="w-full px-3.5 py-2 border @error('title') border-red-500 @else border-gray-300 @enderror rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm text-gray-900 transition"
-                       required>
+                <input type="text" name="title" id="title" value="{{ old('title') }}" 
+                       placeholder="Masukkan judul project (min. 5 karakter)"
+                       class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('title') border-red-500 @enderror" required>
                 @error('title')
-                    <p class="mt-1.5 text-xs text-red-600 font-medium">{{ $message }}</p>
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
-            {{-- Input Description --}}
+            <!-- Description Input -->
             <div>
                 <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                <textarea name="description" 
-                          id="description" 
-                          rows="5" 
-                          placeholder="Masukkan deskripsi project (min. 10 karakter)" 
-                          class="w-full px-3.5 py-2 border @error('description') border-red-500 @else border-gray-300 @enderror rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm text-gray-900 transition"
-                          required>{{ old('description') }}</textarea>
+                <textarea name="description" id="description" rows="4" 
+                          placeholder="Masukkan deskripsi project (min. 10 karakter)"
+                          class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('description') border-red-500 @enderror" required>{{ old('description') }}</textarea>
                 @error('description')
-                    <p class="mt-1.5 text-xs text-red-600 font-medium">{{ $message }}</p>
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
-            {{-- Tombol Simpan & Batal --}}
+            <!-- Status Input (Tugas Praktikum 1) -->
+            <div>
+                <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status Project</label>
+                <select name="status" id="status" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('status') border-red-500 @enderror" required>
+                    <option value="published" {{ old('status') == 'published' ? 'selected' : '' }}>Published</option>
+                    <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>Draft</option>
+                </select>
+                @error('status')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Action Buttons -->
             <div class="flex items-center gap-3 pt-3">
                 <button type="submit" 
                         class="bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm px-5 py-2.5 rounded-lg shadow transition">
@@ -55,7 +55,6 @@
                 </a>
             </div>
         </form>
-
     </div>
 </div>
 @endsection
