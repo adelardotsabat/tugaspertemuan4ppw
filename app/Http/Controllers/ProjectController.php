@@ -8,11 +8,32 @@ use Illuminate\Http\Request;
 class ProjectController extends Controller
 {
     // 1. Menggunakan Local Scope published() sesuai Tugas Praktikum 1
-    public function index()
-    {
-        $projects = Project::published()->latest()->get();
-        return view('projects.index', compact('projects'));
+    public function index(Request $request)
+{
+    // Jumlah data per halaman: hanya boleh 5, 10, 25 (default 10)
+    $perPage = (int) $request->query('per_page', 10);
+    if (!in_array($perPage, [5, 10, 25])) {
+        $perPage = 10;
     }
+
+    // Kata kunci pencarian judul
+    $search = trim($request->query('search', ''));
+
+    // Tetap pakai Local Scope published() dari praktikum sebelumnya
+    $query = Project::published();
+
+    if ($search !== '') {
+        $query->where('title', 'like', '%' . $search . '%');
+    }
+
+    $projects = $query
+        ->latest()
+        ->orderByDesc('id') // pembeda kalau created_at sama (data hasil seeder)
+        ->paginate($perPage)
+        ->withQueryString(); // bawa search & per_page saat pindah halaman
+
+    return view('projects.index', compact('projects', 'search', 'perPage'));
+}
 
     public function create()
     {

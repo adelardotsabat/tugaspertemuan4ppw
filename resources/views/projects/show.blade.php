@@ -7,7 +7,7 @@
         <h2 class="text-2xl font-bold text-gray-800">Detail Project</h2>
         <a href="{{ route('projects.index') }}" 
            class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium text-sm px-4 py-2 rounded-lg border border-gray-200 transition">
-            ← Kembali ke Index
+            ← Kembali ke daftar project
         </a>
     </div>
 
