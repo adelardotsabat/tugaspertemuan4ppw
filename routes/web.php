@@ -22,7 +22,7 @@ Route::get('/profile-saya', function () {
 })->middleware('auth')->name('profile.saya');
 
 // ===== Route wajib login =====
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('projects', ProjectController::class);
 
     // Route tugas praktikum (Trash, Restore, Force Delete)
