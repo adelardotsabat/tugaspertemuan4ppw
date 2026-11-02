@@ -73,3 +73,41 @@ footer hr {
     border-top: 1px solid #e2e8f0;
     margin-bottom: 20px;
 }
+
+/* Menu Login/Logout: kecil, rata kanan, beda dari menu halaman */
+nav ul {
+    align-items: center;
+}
+
+nav ul li.nav-auth {
+    margin-left: auto; /* dorong ke kanan */
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
+
+nav ul li.nav-auth a,
+nav ul li.nav-auth button {
+    background: none;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: #94a3b8;
+    text-decoration: underline;
+}
+
+nav ul li.nav-auth a:hover,
+nav ul li.nav-auth button:hover {
+    background: none;
+    color: #38bdf8;
+}
+
+/* Nama user yang sedang login di navbar */
+nav ul li.nav-auth span {
+    font-size: 0.8rem;
+    color: #cbd5e1;
+}
