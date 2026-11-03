@@ -15,6 +15,7 @@ class Project extends Model
         'title',
         'description',
         'status',
+        'thumbnail',
     ];
 
     /**
@@ -24,5 +25,9 @@ class Project extends Model
     public function scopePublished(Builder $query): Builder
     {
         return $query->where('status', 'published');
+    }
+    public function images()
+    {
+        return $this->hasMany(ProjectImage::class)->orderBy('sort_order');
     }
 }

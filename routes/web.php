@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProjectGalleryController; 
 
 // ===== Route publik =====
 Route::get('/', function () {
@@ -23,7 +25,10 @@ Route::get('/profile-saya', function () {
 
 // ===== Route wajib login =====
 Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');   // ➕
     Route::resource('projects', ProjectController::class);
+    Route::post('projects/{project}/images', [ProjectGalleryController::class, 'store'])->name('projects.images.store');
+    Route::delete('projects/{project}/images/{image}', [ProjectGalleryController::class, 'destroy'])->name('projects.images.destroy');
 
     // Route tugas praktikum (Trash, Restore, Force Delete)
     Route::get('projects-trash', [ProjectController::class, 'trash'])->name('projects.trash');

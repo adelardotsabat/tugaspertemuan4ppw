@@ -41,11 +41,61 @@
             </div>
         </div>
 
+        @if ($project->thumbnail)
+            <img src="{{ asset('storage/' . $project->thumbnail) }}" alt="{{ $project->title }}"
+                class="w-full max-h-80 object-cover rounded-xl mb-6">
+        @endif
+
         <!-- Description Content -->
         <div class="mb-8">
             <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">Deskripsi Project</h3>
             <div class="text-gray-700 leading-relaxed whitespace-pre-line text-base">
                 {{ $project->description }}
+            </div>
+        </div>
+
+        <!-- Gallery -->
+        <div class="mb-8">
+            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Gallery</h3>
+
+            @if(session('success'))
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-4 text-sm">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <form action="{{ route('projects.images.store', $project->id) }}" method="POST"
+                enctype="multipart/form-data" class="mb-5 flex flex-wrap items-center gap-3">
+                @csrf
+                <input type="file" name="images[]" multiple accept="image/*"
+                    class="text-sm text-gray-600 border border-gray-300 rounded-lg">
+                <button type="submit"
+                        class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg">
+                    Upload
+                </button>
+            </form>
+            @error('images')
+                <p class="text-red-500 text-xs mb-3">{{ $message }}</p>
+            @enderror
+            @error('images.*')
+                <p class="text-red-500 text-xs mb-3">{{ $message }}</p>
+            @enderror
+
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                @forelse ($project->images as $img)
+                    <div class="border border-gray-100 rounded-xl p-2">
+                        <img src="{{ asset('storage/' . $img->image) }}" alt="{{ $img->caption ?? $project->title }}"
+                            class="w-full h-36 object-cover rounded-lg">
+                        <form action="{{ route('projects.images.destroy', [$project->id, $img->id]) }}" method="POST"
+                            onsubmit="return confirm('Hapus gambar ini?')" class="mt-2">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-600 hover:text-red-800 text-xs">Hapus</button>
+                        </form>
+                    </div>
+                @empty
+                    <p class="text-sm text-gray-400 col-span-full">Belum ada gambar gallery.</p>
+                @endforelse
             </div>
         </div>
 

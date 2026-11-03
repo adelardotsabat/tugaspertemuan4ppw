@@ -6,7 +6,7 @@
         <h2 class="text-2xl font-bold text-gray-800 mb-1">Tambah Project Baru</h2>
         <p class="text-sm text-gray-500 mb-6">Isi formulir di bawah untuk menambahkan project ke dalam portofolio Anda.</p>
 
-        <form action="{{ route('projects.store') }}" method="POST" class="space-y-4">
+        <form action="{{ route('projects.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
             @csrf
 
             <!-- Title Input -->
@@ -39,6 +39,16 @@
                     <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>Draft</option>
                 </select>
                 @error('status')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Thumbnail Input -->
+            <div>
+                <label for="thumbnail" class="block text-sm font-medium text-gray-700 mb-1">Thumbnail (opsional)</label>
+                <input type="file" name="thumbnail" id="thumbnail" accept="image/*"
+                    class="w-full text-sm text-gray-600 border border-gray-300 rounded-lg">
+                @error('thumbnail')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>

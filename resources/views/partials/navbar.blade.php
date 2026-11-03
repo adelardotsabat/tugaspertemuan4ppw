@@ -6,6 +6,9 @@
         <li><a href="{{ route('projects.index') }}">Projects</a></li>
 
         @auth
+            @if (Auth::user()->role === 'admin')
+                <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
+            @endif
             <li><a href="{{ route('profile.saya') }}">Profil Saya</a></li>
         @endauth
 

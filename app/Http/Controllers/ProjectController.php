@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -47,7 +48,14 @@ class ProjectController extends Controller
             'title'       => 'required|string|min:5|max:255',
             'description' => 'required|string|min:10',
             'status'      => 'required|in:draft,published', // Tambahan validasi status
+            'thumbnail'   => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048'
+                           . '|dimensions:min_width=400,min_height=300',
         ]);
+
+        if ($request->hasFile('thumbnail')) {
+            $validatedData['thumbnail'] = $request->file('thumbnail')
+                ->store('projects/thumbnails', 'public');   // jangan lupa 'public'
+        }
 
         Project::create($validatedData);
 
@@ -57,7 +65,7 @@ class ProjectController extends Controller
 
     public function show($id)
     {
-        $project = Project::findOrFail($id);
+        $project = Project::with('images')->findOrFail($id);
         return view('projects.show', compact('project'));
     }
 
@@ -74,9 +82,20 @@ class ProjectController extends Controller
             'title'       => 'required|string|min:5|max:255',
             'description' => 'required|string|min:10',
             'status'      => 'required|in:draft,published', // Tambahan validasi status
+            'thumbnail'   => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048'
+                           . '|dimensions:min_width=400,min_height=300',
         ]);
 
         $project = Project::findOrFail($id);
+
+        if ($request->hasFile('thumbnail')) {
+            if ($project->thumbnail) {
+                Storage::disk('public')->delete($project->thumbnail);   // hapus file lama
+            }
+            $validatedData['thumbnail'] = $request->file('thumbnail')
+                ->store('projects/thumbnails', 'public');
+        }
+
         $project->update($validatedData);
 
         return redirect()->route('projects.index')
@@ -117,7 +136,15 @@ class ProjectController extends Controller
     // 7. Hapus permanen dari database
     public function forceDelete(string $id)
     {
-        $project = Project::withTrashed()->findOrFail($id);
+        $project = Project::withTrashed()->with('images')->findOrFail($id);
+
+        if ($project->thumbnail) {
+            Storage::disk('public')->delete($project->thumbnail);
+        }
+        foreach ($project->images as $image) {
+                Storage::disk('public')->delete($image->image);
+        }
+
         $project->forceDelete();
 
         return redirect()->route('projects.trash')

@@ -6,7 +6,7 @@
         <h2 class="text-2xl font-bold text-gray-800 mb-1">Edit Project</h2>
         <p class="text-sm text-gray-500 mb-6">Ubah data project portofolio Anda.</p>
 
-        <form action="{{ route('projects.update', $project->id) }}" method="POST" class="space-y-4">
+        <form action="{{ route('projects.update', $project->id) }}" method="POST" enctype="multipart/form-data" class="space-y-4">
             @csrf
             @method('PUT')
 
@@ -38,6 +38,20 @@
                     <option value="draft" {{ old('status', $project->status) == 'draft' ? 'selected' : '' }}>Draft</option>
                 </select>
                 @error('status')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Thumbnail Input -->
+            <div>
+                <label for="thumbnail" class="block text-sm font-medium text-gray-700 mb-1">Thumbnail</label>
+                @if ($project->thumbnail)
+                    <img src="{{ asset('storage/' . $project->thumbnail) }}" alt="{{ $project->title }}"
+                        class="h-24 rounded border border-gray-200 object-cover mb-2">
+                @endif
+                <input type="file" name="thumbnail" id="thumbnail" accept="image/*"
+                    class="w-full text-sm text-gray-600 border border-gray-300 rounded-lg">
+                @error('thumbnail')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>

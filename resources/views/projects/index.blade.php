@@ -61,6 +61,10 @@
                     </p>
                     <h3 class="text-lg font-semibold text-gray-800 mb-1">{{ $project->title }}</h3>
                     <p class="text-xs text-gray-400 mb-2">Tanggal: {{ $project->created_at->format('d M Y, H:i') }}</p>
+                    @if ($project->thumbnail)
+                        <img src="{{ asset('storage/' . $project->thumbnail) }}" alt="{{ $project->title }}"
+                            class="w-28 h-20 object-cover rounded-lg mb-2">
+                    @endif
                     <p class="text-sm text-gray-600">{{ $project->description }}</p>
                 </div>
                 <div class="flex items-center gap-2">
