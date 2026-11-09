@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Builder; // 1. Pastikan Builder di-import
+use Illuminate\Database\Eloquent\Builder;
 
 class Project extends Model
 {
@@ -15,17 +15,22 @@ class Project extends Model
         'title',
         'description',
         'status',
-        'thumbnail',
+        'category_id',   // ➕
+        'thumbnail',     // ➕ WAJIB, kalau tidak thumbnail tidak tersimpan
     ];
 
-    /**
-     * Local Scope untuk memfilter status published.
-     * Penting: Nama method HARUS diawali dengan kata 'scope' (CamelCase)
-     */
     public function scopePublished(Builder $query): Builder
     {
         return $query->where('status', 'published');
     }
+
+    // ➕
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    // ➕
     public function images()
     {
         return $this->hasMany(ProjectImage::class)->orderBy('sort_order');

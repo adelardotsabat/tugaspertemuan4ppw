@@ -29,8 +29,8 @@ class ProjectGalleryController extends Controller
     {
         abort_if($image->project_id !== $project->id, 404);
 
-        Storage::disk('public')->delete($image->image);
-        $image->delete();
+        Storage::disk('public')->delete($image->image);   // file fisik dulu
+        $image->delete();                                 // baru baris database
 
         return back()->with('success', 'Gambar dihapus.');
     }

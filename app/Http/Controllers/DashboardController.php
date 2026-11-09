@@ -13,7 +13,7 @@ class DashboardController extends Controller
             'totalCategories'   => Category::count(),
             'totalTechnologies' => Technology::count(),
             'totalSkills'       => Skill::count(),
-            'latestProjects'    => Project::latest()->take(5)->get(),
+            'latestProjects'    => Project::with('category')->latest()->take(5)->get(),   // ✏️ with('category')
         ]);
     }
 }
