@@ -13,26 +13,29 @@ class ProjectController extends Controller
 {
     public function index(Request $request)
     {
-        $perPage = (int) $request->query('per_page', 10);
+        $search  = trim((string) $request->input('search', ''));
+        $status  = (string) $request->input('status', '');
+        $perPage = (int) $request->input('per_page', 10);
+
         if (!in_array($perPage, [5, 10, 25])) {
             $perPage = 10;
         }
 
-        $search = trim($request->query('search', ''));
-
-        $query = Project::published();
-
-        if ($search !== '') {
-            $query->where('title', 'like', '%' . $search . '%');
-        }
-
-        $projects = $query
+        $projects = Project::with(['category', 'technologies'])
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', '%' . $search . '%')
+                    ->orWhere('description', 'like', '%' . $search . '%');
+                });
+            })
+            ->when(in_array($status, ['published', 'draft']), function ($query) use ($status) {
+                $query->where('status', $status);
+            })
             ->latest()
-            ->orderByDesc('id')
             ->paginate($perPage)
             ->withQueryString();
 
-        return view('projects.index', compact('projects', 'search', 'perPage'));
+        return view('projects.index', compact('projects', 'search', 'status', 'perPage'));
     }
 
     public function create()

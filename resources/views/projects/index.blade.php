@@ -23,20 +23,29 @@
         </div>
     @endif
 
-    <!-- Form Pencarian + Pilihan Jumlah Data per Halaman (method GET) -->
+    <!-- Form Pencarian + Filter Status + Pilihan Jumlah Data per Halaman -->
     <form method="GET" action="{{ route('projects.index') }}"
           class="flex flex-wrap items-center justify-between gap-3 mb-6">
-        <div class="flex items-center gap-2">
+        <div class="flex flex-wrap items-center gap-2">
             <input type="text" name="search" value="{{ $search }}"
                    placeholder="Cari judul project..."
                    class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+            <select name="status" onchange="this.form.submit()"
+                    class="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">Semua Status</option>
+                <option value="published" @selected(($status ?? '') === 'published')>Published</option>
+                <option value="draft" @selected(($status ?? '') === 'draft')>Draft</option>
+            </select>
+
             <button type="submit"
                     class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition">
                 Cari
             </button>
-            @if($search !== '')
+
+            @if($search !== '' || ($status ?? '') !== '')
                 <a href="{{ route('projects.index', ['per_page' => $perPage]) }}"
-                   class="text-sm text-gray-500 hover:text-gray-700">Reset</a>
+                   class="text-sm text-gray-500 hover:text-gray-700 px-2">Reset</a>
             @endif
         </div>
 
@@ -56,9 +65,20 @@
         @forelse($projects as $project)
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex justify-between items-center hover:shadow-md transition">
                 <div>
-                    <p class="text-xs text-blue-600 font-medium mb-1">
-                        Nomor urut {{ $projects->firstItem() + $loop->index }}
-                    </p>
+                    <div class="flex items-center gap-2 mb-1">
+                        <p class="text-xs text-blue-600 font-medium">
+                            Nomor urut {{ $projects->firstItem() + $loop->index }}
+                        </p>
+                        <span class="px-2 py-0.5 text-xs font-medium rounded-full {{ $project->status === 'published' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700' }}">
+                            {{ ucfirst($project->status ?? 'draft') }}
+                        </span>
+                        @if($project->category)
+                            <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-gray-100 text-gray-600">
+                                {{ $project->category->name }}
+                            </span>
+                        @endif
+                    </div>
+
                     <h3 class="text-lg font-semibold text-gray-800 mb-1">{{ $project->title }}</h3>
                     <p class="text-xs text-gray-400 mb-2">Tanggal: {{ $project->created_at->format('d M Y, H:i') }}</p>
                     @if ($project->thumbnail)
