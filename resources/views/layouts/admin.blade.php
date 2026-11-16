@@ -28,6 +28,21 @@
             </a>
         </div>
 
+                {{-- Menu Pintas ke Halaman Publik --}}
+        <div class="pt-4 mt-4 border-t border-slate-700 space-y-1">
+            <p class="px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
+                Halaman Publik
+            </p>
+            <a href="{{ route('portfolio.projects') }}"
+            class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
+                Lihat Portfolio (Filter & Sort)
+            </a>
+            <a href="{{ route('home') }}"
+            class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
+                Ke Halaman Home
+            </a>
+        </div>
+
         <div class="px-3 py-4 border-t border-slate-700 text-sm">
             <a href="{{ route('home') }}" class="block px-3 py-2 rounded-lg hover:bg-slate-700">← Lihat Website</a>
         </div>

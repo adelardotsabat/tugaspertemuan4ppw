@@ -13,10 +13,21 @@ class Project extends Model
 
     protected $fillable = [
         'title',
+        'slug',
+        'short_description',
         'description',
         'status',
-        'category_id',   // ➕
-        'thumbnail',     // ➕ WAJIB, kalau tidak thumbnail tidak tersimpan
+        'project_date',
+        'is_featured',
+        'project_url',
+        'repository_url',
+        'category_id',
+        'thumbnail',
+    ];
+
+    protected $casts = [
+        'project_date' => 'date',
+        'is_featured'  => 'boolean',
     ];
 
     public function scopePublished(Builder $query): Builder
@@ -24,15 +35,18 @@ class Project extends Model
         return $query->where('status', 'published');
     }
 
-    // ➕
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
-    // ➕
     public function images()
     {
         return $this->hasMany(ProjectImage::class)->orderBy('sort_order');
+    }
+
+    public function technologies()
+    {
+        return $this->belongsToMany(Technology::class);
     }
 }

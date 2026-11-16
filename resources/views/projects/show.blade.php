@@ -56,7 +56,8 @@
 
         <!-- Gallery -->
         <div class="mb-8">
-            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Gallery</h3>
+            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Gallery</h3>
+            <p class="text-xs text-gray-400 mb-3">{{ $project->images->count() }}/10 gambar &middot; lebar minimal 800 px</p>
 
             @if(session('success'))
                 <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-4 text-sm">
@@ -81,18 +82,40 @@
                 <p class="text-red-500 text-xs mb-3">{{ $message }}</p>
             @enderror
 
+            @error('caption')
+                <p class="text-red-500 text-xs mb-3">{{ $message }}</p>
+            @enderror
+
             <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                 @forelse ($project->images as $img)
-                    <div class="border border-gray-100 rounded-xl p-2">
-                        <img src="{{ asset('storage/' . $img->image) }}" alt="{{ $img->caption ?? $project->title }}"
+                    <figure class="border border-gray-100 rounded-xl p-2">
+                        <img src="{{ asset('storage/' . $img->image) }}" alt="{{ $img->caption ?: $project->title }}"
                             class="w-full h-36 object-cover rounded-lg">
+
+                        {{-- Caption tampil di halaman --}}
+                        @if ($img->caption)
+                            <figcaption class="text-sm text-gray-600 mt-2">{{ $img->caption }}</figcaption>
+                        @endif
+
+                        {{-- Edit caption (PUT) --}}
+                        <form action="{{ route('projects.images.update', [$project->id, $img->id]) }}" method="POST"
+                            class="mt-2 flex gap-1">
+                            @csrf
+                            @method('PUT')
+                            <input type="text" name="caption" value="{{ $img->caption }}" maxlength="255"
+                                placeholder="Caption..."
+                                class="flex-1 min-w-0 text-xs rounded-md border-gray-300">
+                            <button type="submit"
+                                class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs px-2 rounded-md">Simpan</button>
+                        </form>
+
                         <form action="{{ route('projects.images.destroy', [$project->id, $img->id]) }}" method="POST"
                             onsubmit="return confirm('Hapus gambar ini?')" class="mt-2">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="text-red-600 hover:text-red-800 text-xs">Hapus</button>
                         </form>
-                    </div>
+                    </figure>
                 @empty
                     <p class="text-sm text-gray-400 col-span-full">Belum ada gambar gallery.</p>
                 @endforelse

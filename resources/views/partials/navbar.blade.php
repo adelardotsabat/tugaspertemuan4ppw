@@ -3,7 +3,7 @@
         <li><a href="{{ route('home') }}">Home</a></li>
         <li><a href="{{ route('about') }}">About</a></li>
         <li><a href="{{ route('education') }}">Education</a></li>
-        <li><a href="{{ route('projects.index') }}">Projects</a></li>
+        <li><a href="{{ route('portfolio.projects') }}">Projects</a></li>
 
         @auth
             @if (Auth::user()->role === 'admin')
