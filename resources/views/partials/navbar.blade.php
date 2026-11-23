@@ -4,6 +4,7 @@
         <li><a href="{{ route('about') }}">About</a></li>
         <li><a href="{{ route('education') }}">Education</a></li>
         <li><a href="{{ route('portfolio.projects') }}">Projects</a></li>
+        <li><a href="{{ route('contact') }}">Contact</a></li>
 
         @auth
             @if (Auth::user()->role === 'admin')

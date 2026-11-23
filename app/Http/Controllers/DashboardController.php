@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Category, Project, Skill, Technology};
+use App\Models\{Category, Contact, Project, Skill, Technology};
 
 class DashboardController extends Controller
 {
@@ -18,6 +18,10 @@ class DashboardController extends Controller
             // Latihan Mandiri: Published + Draft = Total Projects
             'publishedProjects' => Project::published()->count(),
             'draftProjects'     => Project::where('status', 'draft')->count(),
+
+            // Latihan Mandiri Pertemuan 12: Total & Unread Messages
+            'totalMessages'     => Contact::count(),
+            'unreadMessages'    => Contact::where('is_read', false)->count(),
 
             // Latihan Mandiri: withCount() jumlah project per kategori
             'categoryStats'     => Category::withCount('projects')

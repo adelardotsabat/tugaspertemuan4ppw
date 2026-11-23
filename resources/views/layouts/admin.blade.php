@@ -26,19 +26,27 @@
                class="block px-3 py-2 rounded-lg {{ request()->routeIs('projects.trash') ? 'bg-slate-700 text-white font-semibold' : 'hover:bg-slate-700' }}">
                 Trash
             </a>
+            <a href="{{ route('contacts.index') }}"
+               class="block px-3 py-2 rounded-lg {{ request()->routeIs('contacts.*') ? 'bg-slate-700 text-white font-semibold' : 'hover:bg-slate-700' }}">
+                Messages
+            </a>
         </div>
 
-                {{-- Menu Pintas ke Halaman Publik --}}
+        {{-- Menu Pintas ke Halaman Publik --}}
         <div class="pt-4 mt-4 border-t border-slate-700 space-y-1">
             <p class="px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
                 Halaman Publik
             </p>
             <a href="{{ route('portfolio.projects') }}"
-            class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
+               class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
                 Lihat Portfolio (Filter & Sort)
             </a>
+            <a href="{{ route('contact') }}"
+               class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
+                Form Contact
+            </a>
             <a href="{{ route('home') }}"
-            class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
+               class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
                 Ke Halaman Home
             </a>
         </div>

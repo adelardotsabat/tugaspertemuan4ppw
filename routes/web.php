@@ -6,6 +6,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProjectGalleryController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ContactAdminController;
 
 // ===== Route publik =====
 Route::get('/', function () {
@@ -47,6 +49,17 @@ Route::middleware(['auth', 'admin'])->group(function () {
     // Latihan Mandiri: edit & update skill
     Route::resource('skills', SkillController::class)->only(['edit', 'update']);
 });
+
+
+
+Route::get('/contact', [ContactController::class, 'create'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])
+    ->middleware('throttle:contact')
+    ->name('contact.store');
+
+// Latihan Mandiri: Admin Contacts
+Route::get('contacts', [ContactAdminController::class, 'index'])->name('contacts.index');
+Route::get('contacts/{contact}', [ContactAdminController::class, 'show'])->name('contacts.show');
 
 // Route login/logout dari Breeze
 require __DIR__.'/auth.php';
