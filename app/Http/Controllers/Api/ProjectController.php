@@ -14,7 +14,7 @@ class ProjectController extends Controller
         $projects = Project::with(['category', 'technologies'])
             ->when($request->search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%")
+                    $q->where('title', 'like', "%{$search}%")
                       ->orWhere('short_description', 'like', "%{$search}%");
                 });
             })
