@@ -16,10 +16,12 @@
     </div>
 @endif
 
-{{-- Latihan Mandiri: card Published / Draft --}}
+{{-- Latihan Mandiri: card Published / Draft & Messages --}}
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
     <x-stat-card label="Published" :value="$publishedProjects" color="text-green-600" />
     <x-stat-card label="Draft" :value="$draftProjects" color="text-yellow-600" />
+    <x-stat-card label="Total Messages" :value="$totalMessages" color="text-blue-600" />
+    <x-stat-card label="Unread Messages" :value="$unreadMessages" color="text-red-600" />
 </div>
 
 {{-- Latihan Mandiri: project per kategori (withCount) + skill teratas --}}
